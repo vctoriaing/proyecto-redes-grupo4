@@ -10,7 +10,7 @@
 ## Integrantes y Roles 
 | Nombre | Rol Asignado | Responsabilidades Principales | 
 | :--- | :--- | :--- | 
-| **[1]** | **Rol 1:** Infraestructura y Enrutamiento | Topología Containerlab (`netlab.clab.yml`), direccionamiento IP (`config-ip.sh`), VLANs (`config-vlans.sh`) y OSPF (`config-ospf.sh`). | 
+| **Fiorella Bovet** | **Rol 1:** Infraestructura y Enrutamiento | Topología Containerlab (`netlab.clab.yml`), direccionamiento IP (`config-ip.sh`), VLANs (`config-vlans.sh`) y OSPF (`config-ospf.sh`). | 
 | **[2]** | **Rol 2:** Servicios y NAT | Salida a Internet con NAT/iptables (`config-nat.sh`), servidores HTTP y Syslog/netcat. | 
 | **Victoria Rojas** | **Rol 3:** Desarrollador y Auditor | Script de auditoría (`netlab\_monitor.py`), configuración (`monitor.json`), evidencias y documentación. | 
 
