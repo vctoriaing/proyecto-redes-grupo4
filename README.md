@@ -40,6 +40,8 @@ Para desplegar y auditar este laboratorio es necesario contar con:
 
 ## Estructura del Repositorio
 
+---
+
 ```text
 ~/containerlab/proyecto/
 ├── README.md               # Guía general de uso y documentación del proyecto
