@@ -1,8 +1,8 @@
 # NetLab Monitor - Proyecto Final de Redes y Comunicaciones
 
-**Asignatura:** Redes y Comunicaciones 
-**Carrera:** Ingeniería Civil Informática 
-**Universidad Autónoma de Chile** 
+**Asignatura:** Redes y Comunicaciones <br>
+**Carrera:** Ingeniería Civil Informática <br>
+**Universidad Autónoma de Chile** <br>
 **Grupo N°:** 4
 
 ---
