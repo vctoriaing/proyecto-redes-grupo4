@@ -40,7 +40,6 @@ Para desplegar y auditar este laboratorio es necesario contar con:
 
 ## Estructura del Repositorio
 
----
 
 ```text
 ~/containerlab/proyecto/
