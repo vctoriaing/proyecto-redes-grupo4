@@ -1,0 +1,12 @@
+=========================================
+ REPORTE DE PRUEBA (SIMULACIÓN) - NETLAB
+ Fecha: 2026-10-27 13:06:47
+=========================================
+
+[1] Inventario: OK
+[2] Interfaces: OK
+[3] Rutas: FAIL
+[4] Conectividad: OK
+[5] Servicios: OK
+[6] OSPF: OK
+[7] NAT: OK

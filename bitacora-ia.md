@@ -117,3 +117,19 @@ La IA explicó el concepto de **Mocks (objetos simulados)**. Recomendó crear un
 
 **Decisión del Estudiante:** 
 **Aceptado y aplicado.** Se creó el archivo `test_monitor.py` implementando una función que usa condicionales (`if "hostname" in comando: return True...`) para simular que todos los equipos están en verde. Esto permitió validar que las funciones de Python no tuvieran errores de sintaxis y que el reporte se generara correctamente, demostrando una buena práctica de desarrollo (aislar la lógica de negocio de la infraestructura).
+
+---
+
+### 9. Integración final con la infraestructura (Ajuste de Datos vs Lógica)
+
+**Prompt (Pregunta a la IA):** 
+> *"Mis compañeros están armando la red en Containerlab. ¿Qué partes de mi código debo cambiar para que el monitor funcione con la red real, y qué partes debo dejar intactas?"*
+
+**Respuesta de la IA (Resumen):** 
+La IA explicó que gracias al diseño desacoplado (usando `monitor.json`), la lógica de Python (`netlab_monitor.py`) no debería modificarse. Los cambios de la red real solo afectan la "capa de datos" (el JSON). Si la red cambia, solo se edita el JSON. Sin embargo, si los compañeros usan comandos de Linux distintos (ej. `nftables` en vez de `iptables`), o nombres de interfaces diferentes (ej. `eth2` en vez de `eth1`), se debe ajustar el comando exacto dentro de la función de Python.
+
+**Decisión del Estudiante:** 
+**Aceptado y planificado.** Se estableció un plan de integración:
+1. Solicitar al Rol 1 las IPs finales del VLSM y los nombres exactos de las interfaces de red (`.10` y `.20`) para actualizarlos en el `monitor.json` y en la verificación de interfaces.
+2. Solicitar al Rol 2 el puerto exacto configurado en `srv-datos` para actualizar la matriz de servicios en el JSON.
+3. Ajustar el comando de la función `verificar_nat` dependiendo de si Rol 2 usó `iptables` o `nftables`.
