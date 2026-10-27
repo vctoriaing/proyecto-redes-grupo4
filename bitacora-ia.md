@@ -133,3 +133,16 @@ La IA explicó que gracias al diseño desacoplado (usando `monitor.json`), la l�
 1. Solicitar al Rol 1 las IPs finales del VLSM y los nombres exactos de las interfaces de red (`.10` y `.20`) para actualizarlos en el `monitor.json` y en la verificación de interfaces.
 2. Solicitar al Rol 2 el puerto exacto configurado en `srv-datos` para actualizar la matriz de servicios en el JSON.
 3. Ajustar el comando de la función `verificar_nat` dependiendo de si Rol 2 usó `iptables` o `nftables`.
+
+---
+
+### 10. Creación del Informe Técnico y Formato de Tablas VLSM
+
+**Prompt (Pregunta a la IA):** 
+> *"Necesito armar un informe técnico con una tabla VLSM muy detallada. ¿Cómo puedo crear tablas en Markdown (formato raw) para que se vean bien en GitHub? Además, ayúdame a entender los conceptos de 'Bits Host' y 'Salto de bloque' para poder explicarlos en el informe."*
+
+**Respuesta de la IA (Resumen):** 
+La IA explicó cómo funcionan las tablas en Markdown usando la barra vertical `|` para las columnas y los guiones `-` para separar el encabezado. También explicó que el "Salto de bloque" es el valor de \(2^n\) (donde \(n\) son los bits de host) y que los hosts útiles siempre son \(2^n - 2\) (restando la dirección de red y la de broadcast). 
+
+**Decisión del Estudiante:** 
+**Aceptado y aplicado.** Se utilizó el formato Markdown crudo (`| Columna | Columna |`) para crear la tabla en el archivo `informe_tecnico.md`. Además, se trasladó esa misma tabla a un archivo Excel (`plan_vlsm.xlsx`) para cumplir con el requisito de la rúbrica. Los conceptos explicados por la IA fueron fundamentales para redactar la sección de justificación técnica de la falla (VLAN 99) y el recálculo del cambio a `/27`, demostrando que el estudiante comprendió la matemática detrás del subnetting.
