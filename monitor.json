@@ -1,0 +1,28 @@
+{
+  "grupo": "Grupo 4",
+  "red_base": "172.16.4.0/24",
+  "red_externa": "203.0.113.0/29",
+  "nodos": {
+    "r1": { "tipo": "router" },
+    "r2": { "tipo": "router" },
+    "r3": { "tipo": "router" },
+    "pc-admin": { "tipo": "cliente", "vlan": 10, "ip": "172.16.4.2" },
+    "pc-ventas": { "tipo": "cliente", "vlan": 20, "ip": "172.16.4.34" },
+    "srv-web": { "tipo": "servidor", "ip": "172.16.4.50" },
+    "srv-datos": { "tipo": "servidor", "ip": "172.16.4.51" },
+    "externo": { "tipo": "externo", "ip": "203.0.113.2" }
+  },
+  "rutas_esperadas": {
+    "r1": ["0.0.0.0/0", "172.16.4.0/24"],
+    "r2": ["0.0.0.0/0", "172.16.4.0/24"],
+    "r3": ["0.0.0.0/0", "172.16.4.0/24"]
+  },
+  "servicios": [
+    { "nodo": "srv-web", "ip": "172.16.4.50", "puerto": 80, "protocolo": "tcp" },
+    { "nodo": "srv-datos", "ip": "172.16.4.51", "puerto": 1234, "protocolo": "tcp" } 
+  ],
+  "pruebas_conectividad": [
+    { "origen": "pc-admin", "destino_ip": "172.16.4.50", "descripcion": "VLAN10 a Servidor Web" },
+    { "origen": "pc-ventas", "destino_ip": "203.0.113.2", "descripcion": "VLAN20 a Internet (Externo)" }
+  ]
+}
