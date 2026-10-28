@@ -1,0 +1,10 @@
+{
+  "name": "NetLab Monitor - Grupo 4",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "privileged": true,
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y python3 iputils-ping && bash -c \"$(curl -sL https://get.containerlab.dev)\"",
+  "remoteUser": "vscode"
+}
