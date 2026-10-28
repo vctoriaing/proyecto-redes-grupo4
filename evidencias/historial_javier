@@ -1,0 +1,7 @@
+NAT:
+1. nano config-nat.sh
+2. chmod +x config-nat.sh
+
+SERVICIOS:
+1. sudo docker exec clab-netlab-r1 sysctl -w net.ipv4.ip_forward=1
+2. sudo docker exec clab-netlab-r1 iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
