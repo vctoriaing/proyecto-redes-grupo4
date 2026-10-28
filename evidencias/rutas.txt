@@ -1,0 +1,33 @@
+default via 172.20.20.1 dev eth0 
+172.16.4.0/27 nhid 39 via 172.16.4.58 dev eth1 proto ospf metric 20 
+172.16.4.32/28 nhid 39 via 172.16.4.58 dev eth1 proto ospf metric 20 
+172.16.4.48/29 dev eth3 proto kernel scope link src 172.16.4.49 
+172.16.4.56/30 dev eth1 proto kernel scope link src 172.16.4.57 
+172.16.4.60/30 nhid 40 proto ospf metric 20 
+	nexthop via 172.16.4.58 dev eth1 weight 1 
+	nexthop via 172.16.4.66 dev eth2 weight 1 
+172.16.4.64/30 dev eth2 proto kernel scope link src 172.16.4.65 
+172.20.20.0/24 dev eth0 proto kernel scope link src 172.20.20.5 
+203.0.113.0/29 dev eth4 proto kernel scope link src 203.0.113.1 
+default via 172.20.20.1 dev eth0 
+172.16.4.0/27 dev eth1.10 proto kernel scope link src 172.16.4.1 
+172.16.4.32/28 dev eth1.20 proto kernel scope link src 172.16.4.33 
+172.16.4.48/29 nhid 43 via 172.16.4.57 dev eth2 proto ospf metric 20 
+172.16.4.56/30 dev eth2 proto kernel scope link src 172.16.4.58 
+172.16.4.60/30 dev eth3 proto kernel scope link src 172.16.4.61 
+172.16.4.64/30 nhid 44 proto ospf metric 20 
+	nexthop via 172.16.4.62 dev eth3 weight 1 
+	nexthop via 172.16.4.57 dev eth2 weight 1 
+172.20.20.0/24 dev eth0 proto kernel scope link src 172.20.20.7 
+203.0.113.0/29 nhid 43 via 172.16.4.57 dev eth2 proto ospf metric 20 
+default via 172.20.20.1 dev eth0 
+172.16.4.0/27 nhid 23 via 172.16.4.61 dev eth2 proto ospf metric 20 
+172.16.4.32/28 nhid 23 via 172.16.4.61 dev eth2 proto ospf metric 20 
+172.16.4.48/29 nhid 27 via 172.16.4.65 dev eth1 proto ospf metric 20 
+172.16.4.56/30 nhid 28 proto ospf metric 20 
+	nexthop via 172.16.4.61 dev eth2 weight 1 
+	nexthop via 172.16.4.65 dev eth1 weight 1 
+172.16.4.60/30 dev eth2 proto kernel scope link src 172.16.4.62 
+172.16.4.64/30 dev eth1 proto kernel scope link src 172.16.4.66 
+172.20.20.0/24 dev eth0 proto kernel scope link src 172.20.20.8 
+203.0.113.0/29 nhid 27 via 172.16.4.65 dev eth1 proto ospf metric 20 

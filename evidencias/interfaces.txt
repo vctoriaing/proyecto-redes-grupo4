@@ -1,0 +1,17 @@
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0@if63        UP             172.20.20.5/24 3fff:172:20:20::5/64 fe80::a842:d0ff:fe8c:cdc1/64 
+eth1@if66        UP             172.16.4.57/30 fe80::a8c1:abff:feff:19a0/64 
+eth2@if68        UP             172.16.4.65/30 fe80::a8c1:abff:feba:4417/64 
+eth3@if78        UP             172.16.4.49/29 fe80::a8c1:abff:fe4d:28be/64 
+eth4@if84        UP             203.0.113.1/29 fe80::a8c1:abff:fe16:85d6/64 
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0@if58        UP             172.20.20.7/24 3fff:172:20:20::7/64 fe80::7c4d:59ff:fe20:1574/64 
+eth1.10@eth1     UP             172.16.4.1/27 fe80::a8c1:abff:fec2:329f/64 
+eth1.20@eth1     UP             172.16.4.33/28 fe80::a8c1:abff:fec2:329f/64 
+eth2@if67        UP             172.16.4.58/30 fe80::a8c1:abff:fe88:aee3/64 
+eth3@if70        UP             172.16.4.61/30 fe80::a8c1:abff:fe61:32f4/64 
+eth1@if72        UP             fe80::a8c1:abff:fec2:329f/64 
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0@if64        UP             172.20.20.8/24 3fff:172:20:20::8/64 fe80::f8bb:77ff:fecf:8ad3/64 
+eth1@if69        UP             172.16.4.66/30 fe80::a8c1:abff:fee4:45c3/64 
+eth2@if71        UP             172.16.4.62/30 fe80::a8c1:abff:fed4:8b8d/64 

@@ -1,0 +1,56 @@
+# TOPOLOGIA PROYECTO
+# los switches son bridges del host (kind: bridge)
+# los nombres de interfaz de sw-a y sw-b no se repiten
+name: netlab
+topology:
+  nodes:
+    r1:
+      kind: linux
+      image: frrouting/frr:v8.4.1
+      binds:
+        - frr/daemons:/etc/frr/daemons
+    r2:
+      kind: linux
+      image: frrouting/frr:v8.4.1
+      binds:
+        - frr/daemons:/etc/frr/daemons
+    r3:
+      kind: linux
+      image: frrouting/frr:v8.4.1
+      binds:
+        - frr/daemons:/etc/frr/daemons
+    sw-a:
+      kind: bridge
+    sw-b:
+      kind: bridge
+    pc-admin:
+      kind: linux
+      image: nicolaka/netshoot
+      cmd: sleep infinity
+    pc-ventas:
+      kind: linux
+      image: nicolaka/netshoot
+      cmd: sleep infinity
+    srv-web:
+      kind: linux
+      image: nicolaka/netshoot
+      cmd: sleep infinity
+    srv-datos:
+      kind: linux
+      image: nicolaka/netshoot
+      cmd: sleep infinity
+    externo:
+      kind: linux
+      image: nicolaka/netshoot
+      cmd: sleep infinity
+  links:
+    - endpoints: ["r1:eth1", "r2:eth2"]        # enlace r1-r2
+    - endpoints: ["r1:eth2", "r3:eth1"]        # enlace r1-r3
+    - endpoints: ["r2:eth3", "r3:eth2"]        # enlace r2-r3
+    - endpoints: ["r2:eth1", "sw-a:eth1"]      # trunk VLAN 10 y 20
+    - endpoints: ["pc-admin:eth1", "sw-a:eth2"]
+    - endpoints: ["pc-ventas:eth1", "sw-a:eth3"]
+    - endpoints: ["r1:eth3", "sw-b:eth4"]      # servidores
+    - endpoints: ["srv-web:eth1", "sw-b:eth5"]
+    - endpoints: ["srv-datos:eth1", "sw-b:eth6"]
+    - endpoints: ["r1:eth4", "externo:eth1"]   # salida a externo
