@@ -146,3 +146,122 @@ La IA explicó cómo funcionan las tablas en Markdown usando la barra vertical `
 
 **Decisión del Estudiante:** 
 **Aceptado y aplicado.** Se utilizó el formato Markdown crudo (`| Columna | Columna |`) para crear la tabla en el archivo `informe_tecnico.md`. Además, se trasladó esa misma tabla a un archivo Excel (`plan_vlsm.xlsx`) para cumplir con el requisito de la rúbrica. Los conceptos explicados por la IA fueron fundamentales para redactar la sección de justificación técnica de la falla (VLAN 99) y el recálculo del cambio a `/27`, demostrando que el estudiante comprendió la matemática detrás del subnetting.
+
+---
+
+**Integrante 1 - Fiorella Bovet (Rol: Infraestructura y Enrutamiento)**
+
+---
+### 1. Entorno (GitHub Codespaces) y Git
+
+**Prompt (Pregunta a la IA):** 
+> *"No sé nada de Git ni GitHub. ¿Es bueno y efectivo usar Codespaces para este proyecto y mi rol?"*
+
+**Respuesta de la IA (Resumen):** 
+Explicó los pasos de Git (clone, add, commit, pull, push) y entregó un devcontainer.json que instala Docker y Containerlab. Advirtió dos límites: la cuota gratis de horas y que debía comprobarse el soporte de VLAN 802.1Q.
+
+**Decisión del Estudiante:** 
+**Aceptado y adaptado.** Se usó Codespaces. Los archivos ya existían en el repositorio como plantilla vacía (realizado por rol 3), así que se completó su contenido y se subió solo lo propio (git add archivo por archivo), sin la carpeta clab-netlab/ ni los archivos de otros roles.
+
+---
+
+### 2. Codespace + subir códigos a GitHub
+
+**Prompt (Pregunta a la IA):** 
+> *"Dame un paso a paso de como hacer lo del codespace para luego subir los codigos porque no sé muy bien como usar github"*
+
+**Respuesta de la IA (Resumen):** 
+Parte A: Tener acceso al repositorio
+Parte B: Agregar el archivo de configuración del Codespace
+Parte C: Crear el Codespace
+Parte D: Subir tus archivos al Codespace
+Parte E: Probar que todo funciona
+Parte F: Subir tus códigos a GitHub
+
+**Decisión del Estudiante:** 
+**Aceptado y aplicado.** Se siguieron las indicaciones dadas por la IA para lograr subir los códigos correctamente.
+
+---
+
+### 3. Elementos que no están en clases
+
+**Prompt (Pregunta a la IA):** 
+> *"¿Qué partes del proyecto no se ven en las clases y cómo se resuelven?"*
+
+**Respuesta de la IA (Resumen):** 
+1. FRRouting y vtysh (OSPF): el enunciado dice que OSPF se investiga por cuenta propia. Los routers usan la imagen de FRR y se configuran con vtysh -c.
+2. Crear los bridges del host antes del deploy: ip link add name sw-a type bridge. Containerlab no los crea ni los borra, por eso destruir.sh los elimina.
+3. ip route replace default en lugar de add: Docker ya agrega una ruta por defecto en eth0, y replace evita el error de ruta ya existente.
+
+**Decisión del Estudiante:** 
+**Aceptado y comprobado en el laboratorio.** Los tres puntos funcionaron al desplegar (vecinos OSPF en Full, bridges creados, clientes con su gateway).
+
+---
+### 4. FRRouting y "vtysh" (configuración de OSPF)
+
+**Prompt (Pregunta a la IA, resumen):** 
+> *"Soy la encargada del Rol 1 (infraestructura y enrutamiento) y necesito configurar OSPF en los tres routers (`config-ospf.sh`). El código debe usar los comandos de las clases, con comentarios cortos y claros para yo entender lo que está dentro."*
+
+**Respuesta de la IA (Resumen):** 
+La IA entregó "config-ospf.sh", que entra a cada router con "docker exec" y le pasa comandos a "vtysh", la consola de FRRouting, usando un "-c" por cada comando: "configure terminal", "router ospf", "ospf router-id", y un "network <red> area 0" por cada red directamente conectada. Cada router lleva un router-id distinto (1.1.1.1, 2.2.2.2 y 3.3.3.3), y r1 anuncia también "203.0.113.0/29" para que los clientes lleguen a externo. Explicó que "frr/daemons" con "ospfd=yes" enciende el proceso OSPF, que la "\" solo parte un comando largo en varias líneas, y qué es un vecino OSPF y los estados que atraviesa hasta "Full".
+
+**Decisión del Estudiante:** 
+**Aceptado y comprobado.** Esta parte no se vio en clases, así que se ejecutó el script y se verificó en el laboratorio. La primera vez falló porque "ospfd" no estaba corriendo. Corregido eso, "show ip ospf neighbor" mostró los vecinos en "Full" y "ip route" mostró rutas con "proto ospf". Se revisó cada comando para poder explicarlo en la defensa.
+
+### 5. Imagen de FRR inexistente
+
+**Prompt (Pregunta a la IA):** 
+> *✗ Failed to pull image docker.io/frrouting/frr:v9.1.0: Error response from daemon: failed to resolve reference "docker.io/frrouting/frr:v9.1.0": docker.io/frrouting/frr:v9.1.0: not found*
+
+**Respuesta de la IA (Resumen):** 
+La IA había puesto frrouting/frr:v9.1.0 en el .yml sin comprobar que existiera. El deploy falló con not found. Se sugirió buscar una versión existente.
+
+**Decisión del Estudiante:** 
+**Aceptado y corregido.** Se probó docker pull frrouting/frr:v8.4.1, que sí existe, y se cambió la imagen en netlab.clab.yml.
+
+---
+
+### 6. Archivo frr/daemons dañado
+
+**Prompt (Pregunta a la IA):** 
+> *@foshiguro ➜ /workspaces/proyecto-redes-grupo4 (main) $ ./config-ospf.sh
+% Can't open configuration file /etc/frr/vtysh.conf due to 'No such file or directory'.
+ospfd is not running
+% Can't open configuration file /etc/frr/vtysh.conf due to 'No such file or directory'.
+ospfd is not running
+% Can't open configuration file /etc/frr/vtysh.conf due to 'No such file or directory'.
+ospfd is not running*
+
+**Respuesta de la IA (Resumen):** 
+Al revisar el interior del router se vio que en daemons se habían pegado también las líneas del comando (mkdir, cat > ... << 'EOF'). Por eso ospfd no arrancaba (ospfd is not running).
+
+**Decisión del Estudiante:** 
+**Aceptado y corregido.** Se borró el archivo, se escribió de nuevo desde la terminal y se verificó con ps que ospfd ya corría. Los vecinos pasaron a Full.
+
+---
+
+### 7. Ping a srv-web fallaba por el firewall del host
+
+**Prompt (Pregunta a la IA):** 
+> *@foshiguro ➜ /workspaces/proyecto-redes-grupo4 (main) $ grep "packet loss" evidencias/pings.txt
+4 packets transmitted, 4 received, 0% packet loss, time 3098ms
+4 packets transmitted, 4 received, 0% packet loss, time 3068ms
+4 packets transmitted, 0 received, 100% packet loss, time 3060ms*
+
+**Respuesta de la IA (Resumen):** 
+La IA planteó una hipótesis: la política FORWARD DROP del host descartaba el tráfico que cruza el bridge sw-b, porque br_netfilter lo pasaba por iptables. Pidió comprobarlo antes de cambiar nada.
+
+**Decisión del Estudiante:** 
+**Aceptado tras verificar.** sysctl net.bridge.bridge-nf-call-iptables valía 1; al ponerlo en 0 el ping funcionó. Se agregó la línea a desplegar.sh y se volvió a guardar la evidencia (los tres pings con 0 % de pérdida).
+
+---
+
+### 8. Preguntas para entender los scripts antes de entregarlos
+**Prompt (Pregunta a la IA):** 
+> *"¿Para qué sirve #!/bin/bash?", "¿Por qué config-ospf.sh tiene \?" y "¿Por qué se llama vecinos?"*
+
+**Respuesta de la IA (Resumen):** 
+Explicó que #!/bin/bash indica con qué programa se ejecuta el script; que la \ continúa un mismo comando en la línea siguiente; y que "vecino" es un router OSPF conectado directamente, que pasa por varios estados hasta Full.
+
+**Decisión del Estudiante:** 
+**Aceptado y corregido.** Se hicieron estas preguntas para poder explicar cada script en el video, siguiendo la regla del curso: lo que no se pueda explicar, no se entrega.
