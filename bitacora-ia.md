@@ -276,7 +276,7 @@ Explicó que #!/bin/bash indica con qué programa se ejecuta el script; que la \
 
 Prompt (Pregunta a la IA):
 
-"¿Cómo debo configurar el script config-nat.sh para habilitar el reenvío de paquetes y la traducción de direcciones de red (NAT MASQUERADE) en el router r1 hacia la interfaz externa (eth1), cumpliendo con la topología de Containerlab?"
+> *"¿Cómo debo configurar el script config-nat.sh para habilitar el reenvío de paquetes y la traducción de direcciones de red (nat masquerade) en el router r1 hacia la interfaz externa (eth1), cumpliendo con la topología de containerlab?"*
 
 Respuesta de la IA (Resumen):
 La IA explicó que para que los equipos internos salgan a la red simulada de internet es necesario activar primero el reenvío IP en el kernel mediante sysctl -w net.ipv4.ip_forward=1. Luego, sugirió usar la tabla nat de iptables con la regla de enmascaramiento POSTROUTING -o eth1 -j MASQUERADE para que las IPs privadas salgan disfrazadas con la IP pública del router de borde.
@@ -290,7 +290,7 @@ Aceptado y aplicado. Se programó el script config-nat.sh utilizando comandos de
 
 Prompt (Pregunta a la IA):
 
-"¿Cómo puede el script netlab_monitor.py verificar automáticamente si la regla de NAT se aplicó correctamente en el router r1 sin que falle el diagnóstico?"
+> *"¿Cómo puede el script netlab_monitor.py verificar automáticamente si la regla de NAT se aplicó correctamente en el router r1 sin que falle el diagnóstico?"*
 
 Respuesta de la IA (Resumen):
 La IA recomendó ejecutar el comando iptables -t nat -L -n -v dentro del contenedor r1 mediante un subproceso y buscar la cadena de texto "MASQUERADE" en la salida estándar capturada. Si el texto está presente, significa que la traducción está activa; de lo contrario, arroja una falla en la capa de seguridad y traducción.
@@ -304,7 +304,7 @@ Aceptado y aplicado. Se implementó la función verificar_nat(config) en el scri
 
 Prompt (Pregunta a la IA):
 
-"Al ejecutar el monitor de red, las rutas de los routers me arrojan un [FAIL] a pesar de que OSPF está funcionando en estado Full. ¿Por qué ocurre esto y cómo se soluciona en el archivo JSON?"
+> *"Al ejecutar el monitor de red, las rutas de los routers me arrojan un fail a pesar de que ospf está funcionando en estado Full. ¿Por qué ocurre esto y cómo se soluciona en el archivo json?"*
 
 Respuesta de la IA (Resumen):
 La IA indicó que el script compara cadenas de texto exactas. Si el archivo monitor.json busca rutas globales o genéricas (como 0.0.0.0/0 o 172.16.4.0/24), pero el enrutamiento dinámico OSPF distribuye bloques VLSM específicos (/27, /28, /29), la validación literal fallará. Sugirió actualizar el JSON con las subredes exactas que arroja ip route.
