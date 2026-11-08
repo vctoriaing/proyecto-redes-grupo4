@@ -265,3 +265,49 @@ Explicó que #!/bin/bash indica con qué programa se ejecuta el script; que la \
 
 **Decisión del Estudiante:** 
 **Aceptado y corregido.** Se hicieron estas preguntas para poder explicar cada script en el video, siguiendo la regla del curso: lo que no se pueda explicar, no se entrega.
+
+---
+
+**Integrante 2 (Rol: Configuración de NAT, Red Externa y Auditoría de Red)**
+
+---
+
+### 1. Configuración de NAT MASQUERADE en el Router de Borde (r1)
+
+Prompt (Pregunta a la IA):
+
+"¿Cómo debo configurar el script config-nat.sh para habilitar el reenvío de paquetes y la traducción de direcciones de red (NAT MASQUERADE) en el router r1 hacia la interfaz externa (eth1), cumpliendo con la topología de Containerlab?"
+
+Respuesta de la IA (Resumen):
+La IA explicó que para que los equipos internos salgan a la red simulada de internet es necesario activar primero el reenvío IP en el kernel mediante sysctl -w net.ipv4.ip_forward=1. Luego, sugirió usar la tabla nat de iptables con la regla de enmascaramiento POSTROUTING -o eth1 -j MASQUERADE para que las IPs privadas salgan disfrazadas con la IP pública del router de borde.
+
+Decisión del Estudiante:
+Aceptado y aplicado. Se programó el script config-nat.sh utilizando comandos de ejecución en contenedor (docker exec clab-netlab-r1) para automatizar ambos pasos durante el despliegue general de la red.
+
+---
+
+### 2. Validación de la regla NAT en el script monitor (netlab_monitor.py)
+
+Prompt (Pregunta a la IA):
+
+"¿Cómo puede el script netlab_monitor.py verificar automáticamente si la regla de NAT se aplicó correctamente en el router r1 sin que falle el diagnóstico?"
+
+Respuesta de la IA (Resumen):
+La IA recomendó ejecutar el comando iptables -t nat -L -n -v dentro del contenedor r1 mediante un subproceso y buscar la cadena de texto "MASQUERADE" en la salida estándar capturada. Si el texto está presente, significa que la traducción está activa; de lo contrario, arroja una falla en la capa de seguridad y traducción.
+
+Decisión del Estudiante:
+Aceptado y aplicado. Se implementó la función verificar_nat(config) en el script de auditoría, la cual realiza exactamente esta consulta para asegurar que el punto 7 del monitoreo quede en verde ([ OK ]).
+
+---
+
+### 3. Resolución de discrepancias en las rutas del archivo monitor.json
+
+Prompt (Pregunta a la IA):
+
+"Al ejecutar el monitor de red, las rutas de los routers me arrojan un [FAIL] a pesar de que OSPF está funcionando en estado Full. ¿Por qué ocurre esto y cómo se soluciona en el archivo JSON?"
+
+Respuesta de la IA (Resumen):
+La IA indicó que el script compara cadenas de texto exactas. Si el archivo monitor.json busca rutas globales o genéricas (como 0.0.0.0/0 o 172.16.4.0/24), pero el enrutamiento dinámico OSPF distribuye bloques VLSM específicos (/27, /28, /29), la validación literal fallará. Sugirió actualizar el JSON con las subredes exactas que arroja ip route.
+
+Decisión del Estudiante:
+Aceptado y corregido. Se actualizó la sección de rutas_esperadas en el archivo monitor.json con los bloques VLSM reales de la red del grupo (ej. 172.16.4.0/27, 172.16.4.32/28), logrando que todas las pruebas pasaran a estado [ OK ] y generando con éxito el reporte de auditoría final en la carpeta evidencias/.
