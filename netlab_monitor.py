@@ -21,10 +21,10 @@ def cargar_configuracion(ruta):
 def ejecutar_comando(nodo, comando):
     """Ejecuta un comando dentro de un contenedor. Retorna (True/False, salida)."""
     try:
-        # Simulamos docker exec. En un entorno real, usa ["docker", "exec", nodo, "bash", "-c", comando]
+        # Ejecuta docker exec en el contenedor (agrega clab-netlab- si falta)
         # Para pruebas sin red, puedes cambiar esto por leer archivos .txt
         resultado = subprocess.run(
-            ["docker", "exec", nodo, "bash", "-c", comando],
+            ["docker", "exec", nodo if nodo.startswith("clab-") else "clab-netlab-" + nodo, "bash", "-c", comando],
             capture_output=True, text=True, timeout=5
         )
         if resultado.returncode == 0:
