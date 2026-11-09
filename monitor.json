@@ -24,5 +24,13 @@
   "pruebas_conectividad": [
     { "origen": "pc-admin", "destino_ip": "172.16.4.50", "descripcion": "VLAN10 a Servidor Web" },
     { "origen": "pc-ventas", "destino_ip": "203.0.113.2", "descripcion": "VLAN20 a Internet (Externo)" }
-  ]
+  ],
+  "nat": {
+  "router": "clab-netlab-r1",
+  "interfaz_salida": "eth4",
+  "cliente": "clab-netlab-pc-admin",
+  "externo": "clab-netlab-externo",
+  "ip_externo": "203.0.113.2",
+  "ip_r1_externa": "203.0.113.1"
+}
 }
