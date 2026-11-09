@@ -5,6 +5,7 @@ import json
 import argparse
 import datetime
 import os
+import time
 
 # Variables globales para colores (opcional, para que se vea pro en el video)
 OK = "[ OK ]"
@@ -96,17 +97,21 @@ def verificar_conectividad(config):
     return todo_ok
 
 def verificar_servicios(config):
-    print("\n--- [5] Verificando Servicios (Sockets) ---")
+    print("\n--- [5] Verificando Servicios ---")
     todo_ok = True
     for servicio in config["servicios"]:
+        nodo = servicio["nodo"]
         ip = servicio["ip"]
         puerto = servicio["puerto"]
-        try:
-            # Intentamos conectar por Socket (TCP)
-            with socket.create_connection((ip, puerto), timeout=2):
-                print(f"{OK} Servicio en {ip}:{puerto} está escuchando.")
-        except (socket.timeout, ConnectionRefusedError):
-            print(f"{FAIL} Servicio en {ip}:{puerto} NO responde (Capa: Servicios).")
+        # Conexion desde un cliente (dentro del laboratorio)
+        conecta, _ = ejecutar_comando("pc-admin", f"nc -z -w 2 {ip} {puerto}")
+        # Puerto en escucha segun ss dentro del servidor
+        _, salida = ejecutar_comando(nodo, "ss -tulpn")
+        escucha = f":{puerto} " in salida
+        if conecta and escucha:
+            print(f"{OK} {nodo} {ip}:{puerto} responde y aparece en ss -tulpn.")
+        else:
+            print(f"{FAIL} {nodo} {ip}:{puerto} NO responde (Capa: Servicios).")
             todo_ok = False
     return todo_ok
 

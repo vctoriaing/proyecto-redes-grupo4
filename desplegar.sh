@@ -17,3 +17,7 @@ sudo containerlab deploy -t netlab.clab.yml
 ./config-vlans.sh
 ./config-ospf.sh
 ./config-nat.sh
+./config-servicios.sh
+
+# esperar a que OSPF converja
+sleep 30
