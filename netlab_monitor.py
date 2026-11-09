@@ -127,18 +127,29 @@ def verificar_ospf(config):
 
 def verificar_nat(config):
     print("\n--- [7] Verificando NAT en r1 ---")
-    exito, salida = ejecutar_comando("r1", "iptables -t nat -L -n -v")
-    if not exito:
-        print(f"{FAIL} No se pudo consultar iptables en r1 (Capa: Enlace).")
-        return False
-        
-    if "MASQUERADE" in salida:
-        print(f"{OK} Regla NAT (MASQUERADE) encontrada en r1.")
-        return True
-    else:
-        print(f"{FAIL} No hay reglas NAT activas en r1 (Capa: NAT).")
-        return False
+    nat = config["nat"]
 
+    # MASQUERADE debe salir por la interfaz hacia externo
+    exito, salida = ejecutar_comando(nat["router"], "iptables -t nat -S POSTROUTING")
+    regla = f"-o {nat['interfaz_salida']} -j MASQUERADE"
+    if not exito or regla not in salida:
+        print(f"{FAIL} No hay MASQUERADE por {nat['interfaz_salida']} en r1 (Capa: NAT).")
+        return False
+    print(f"{OK} Regla MASQUERADE por {nat['interfaz_salida']} encontrada en r1.")
+
+    # externo debe ver la ip de r1 y no la del cliente
+    espia = subprocess.Popen(
+        ["docker", "exec", nat["externo"], "timeout", "5",
+         "tcpdump", "-ni", "eth1", "-c", "1", "icmp"],
+        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    time.sleep(1)
+    ejecutar_comando(nat["cliente"], f"ping -c 1 -W 2 {nat['ip_externo']}")
+    captura, _ = espia.communicate()
+    if nat["ip_r1_externa"] in captura:
+        print(f"{OK} Externo ve la IP de r1 ({nat['ip_r1_externa']}), no la del cliente.")
+        return True
+    print(f"{FAIL} Externo no ve la IP de r1 (Capa: NAT).")
+    return False
 def generar_reporte(resultados):
     print("\n--- [8] Generando Reporte ---")
     fecha = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
