@@ -119,3 +119,8 @@ python3 test_monitor.py
 ## Uso del script con IA (Bitácora)
 
 El desarrollo de este proyecto integró herramientas de IA para la generación de código base. Todo el proceso de prompts, correcciones y rechazos se encuentra documentado en el archivo [`bitacora-ia.md`](bitacora-ia.md).
+
+---
+
+## Defensa Técnica en Video 
+* Enlace a la defensa técnica (Drive):  [Prueba_Pratica_III.mp4](https://aluautonoma365-my.sharepoint.com/:v:/g/personal/victoria_rojas6_cloud_uautonoma_cl/IQBMYiGnStweSKq-7tM_hhJIASQcqcHsvrAcbrN-myAATyA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=2yvd3m).
